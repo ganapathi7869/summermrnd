@@ -7,11 +7,11 @@ int emptystack(char *post, int postind, char *stack, int *top){
 	}
 	return postind;
 }
-int pushaddition(char *post, int postind, char *stack, int *top){
+int pushaddition(char *post, int postind, char *stack, int *top, char topush){
 	while (*top > -1 && stack[*top] != '('){
 		post[postind++] = stack[(*top)--];
 	}
-	stack[++(*top)] = '+';
+	stack[++(*top)] = topush;
 	return postind;
 }
 char *infixtopostfix(char *inp){
@@ -32,15 +32,16 @@ char *infixtopostfix(char *inp){
 			ind++;
 		}
 		else if (inp[ind] == '+' || inp[ind] == '-'){
-			postind = pushaddition(post, postind, stack, &top);
+			postind = pushaddition(post, postind, stack, &top,inp[ind]);
 			ind++;
 		}
 		else if (inp[ind] == '*' || inp[ind] == '/' || inp[ind] == '%'){
-			stack[++top] = inp[ind];
-			ind++;
+			stack[++top] = inp[ind++];
 		}
 		else{
-			post[postind++] = inp[ind++];
+			post[postind++] = ',';
+			while ((inp[ind] >= 'A' && inp[ind] <= 'Z') || (inp[ind] >= '0' && inp[ind] <= '9'))
+				post[postind++] = inp[ind++];
 		}
 	}
 	postind=emptystack(post, postind, stack, &top);
