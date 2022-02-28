@@ -1,0 +1,1 @@
+fsutil file createnew harddisk.hdd 104857600
